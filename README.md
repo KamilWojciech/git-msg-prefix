@@ -1,0 +1,2 @@
+#Git msg-prefix
+This is subcommand to git which allows you to set commit message prefix for specific branch. It is very useful when working with jira. You can sepcify prefix i.e AB-1 which represents jira issue number.
