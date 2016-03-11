@@ -4,7 +4,8 @@ class Command:
         self.args = args
 
     def run(self):
+        print self.args
         __import__(self.className)
         module = __import__(self.className)
-        command = getattr(module, self.className)()
+        command = getattr(module, self.className)(self.args)
         command.run()

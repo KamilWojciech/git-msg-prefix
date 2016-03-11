@@ -1,3 +1,5 @@
+import subprocess
+
 class GitConfig():
     section = 'msg-prefix'
 
@@ -11,3 +13,9 @@ class GitConfig():
 
     def set(self, key, value):
         subprocess.check_output(['git','config', self.section + '.' +key, value])
+
+def branchName():
+    branchName = subprocess.check_output(['bash','-c', 'git rev-parse --abbrev-ref HEAD '])
+    branchName = branchName.strip()
+
+    return branchName
