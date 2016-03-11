@@ -18,6 +18,10 @@ setParser.set_defaults(which='SetCommand')
 setParser.add_argument('prefix', help='String which will be included in all commit messages for specific branch')
 setParser.add_argument('-b', '--branch', help='Branch name (default is current branch)', required=False)
 
+removeParser = subparsers.add_parser('remove', help='Set prefix for commit message')
+removeParser.set_defaults(which='RemoveCommand')
+removeParser.add_argument('-b', '--branch', help='Branch name (default is current branch)', required=False)
+
 args = parser.parse_args()
 
 command = Command(args)
