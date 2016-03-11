@@ -12,7 +12,6 @@ class SetCommand:
         else:
             self.branch = branchName()
 
-
     def run(self):
         gitConfig = GitConfig()
         gitConfig.set(self.branch, self.prefix)

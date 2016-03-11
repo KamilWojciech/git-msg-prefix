@@ -1,0 +1,14 @@
+#!/usr/bin/python
+import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)) + '/../helper')
+from git_helper import *
+
+gitConfig = GitConfig()
+prefix = gitConfig.get(branchName())
+
+with open(sys.argv[1], 'r') as message_file:
+    lines = message_file.readlines()
+    lines[0] = prefix + ' ' + lines[0]
+with open(sys.argv[1], 'w') as message_file:
+    message_file.write(''.join(lines))

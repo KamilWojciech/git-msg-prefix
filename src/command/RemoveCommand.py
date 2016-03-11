@@ -10,7 +10,6 @@ class RemoveCommand:
         else:
             self.branch = branchName()
 
-
     def run(self):
         gitConfig = GitConfig()
         if (gitConfig.unset(self.branch) != None):
