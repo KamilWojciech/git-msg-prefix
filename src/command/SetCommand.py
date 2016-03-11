@@ -14,6 +14,7 @@ class SetCommand:
 
 
     def run(self):
-        print self.prefix
-        print self.branch
-        print 'set command!'
+        gitConfig = GitConfig()
+        gitConfig.set(self.branch, self.prefix)
+
+        print "Commit messages for \033[92m" + self.branch + "\033[0m branch has now prefix: \033[92m" + self.prefix + "\033[0m"
