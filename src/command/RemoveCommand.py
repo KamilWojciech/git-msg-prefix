@@ -13,7 +13,7 @@ class RemoveCommand:
 
     def run(self):
         gitConfig = GitConfig()
-        if (gitConfig.unset(self.branch)):
+        if (gitConfig.unset(self.branch) != None):
             print "Commit messages for \033[92m" + self.branch + "\033[0m branch no longer has prefix"
         else:
             print "Branch \033[92m" + self.branch + "\033[0m does not have prefix!"

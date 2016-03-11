@@ -16,11 +16,11 @@ listParser.set_defaults(which='ListCommand')
 setParser = subparsers.add_parser('set', help='Set prefix for commit message')
 setParser.set_defaults(which='SetCommand')
 setParser.add_argument('prefix', help='String which will be included in all commit messages for specific branch')
-setParser.add_argument('-b', '--branch', help='Branch name (default is current branch)', required=False)
+setParser.add_argument('branch', help='Branch name (default is current branch)', nargs='?')
 
 removeParser = subparsers.add_parser('remove', help='Set prefix for commit message')
 removeParser.set_defaults(which='RemoveCommand')
-removeParser.add_argument('-b', '--branch', help='Branch name (default is current branch)', required=False)
+removeParser.add_argument('branch', help='Branch name (default is current branch)', nargs='?')
 
 args = parser.parse_args()
 
