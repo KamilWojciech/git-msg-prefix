@@ -7,10 +7,8 @@ from git_helper import *
 gitConfig = GitConfig()
 prefix = gitConfig.get(branchName())
 
-print "Branch prefix: " + prefix
-
 with open(sys.argv[1], 'r') as message_file:
     lines = message_file.readlines()
-    lines[0] = prefix + ' ' + lines[0]
+    lines[0] = '[' + prefix + '] ' + lines[0]
 with open(sys.argv[1], 'w') as message_file:
     message_file.write(''.join(lines))
