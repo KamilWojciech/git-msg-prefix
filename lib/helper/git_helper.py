@@ -1,30 +1,34 @@
 import subprocess
 import re
 
+
 class GitConfig():
+    def __init__(self):
+        pass
+
     section = 'msg-prefix'
 
     def get(self, key):
         try:
-            var = subprocess.check_output(['git','config', self.section + '.' +key]).strip()
+            var = subprocess.check_output(['git', 'config', self.section + '.' + key]).strip()
         except subprocess.CalledProcessError:
             var = None
 
         return var
 
     def set(self, key, value):
-        subprocess.check_output(['git','config', self.section + '.' +key, value])
+        subprocess.check_output(['git', 'config', self.section + '.' + key, value])
 
     def unset(self, key):
         try:
-            var = subprocess.check_output(['git','config', '--unset', self.section + '.' +key]).strip()
+            var = subprocess.check_output(['git', 'config', '--unset', self.section + '.' + key]).strip()
         except subprocess.CalledProcessError:
             var = None
 
         return var
 
     def list(self):
-        output = subprocess.check_output(['git','config', '--list'])
+        output = subprocess.check_output(['git', 'config', '--list'])
         fullList = output.split('\n')
 
         list = {}
@@ -41,7 +45,10 @@ class GitConfig():
 
 
 def branchName():
-    branchName = subprocess.check_output(['bash','-c', 'git rev-parse --abbrev-ref HEAD '])
-    branchName = branchName.strip()
+    try:
+        branchName = subprocess.check_output(['bash', '-c', 'git rev-parse --abbrev-ref HEAD '])
+        branchName = branchName.strip()
+    except:
+        branchName = None
 
     return branchName
