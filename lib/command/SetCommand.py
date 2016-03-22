@@ -8,9 +8,9 @@ class SetCommand:
         self.prefix = args.prefix
 
         if (args.branch):
-            self.branch = args.branch
+            self.branch = args.branch.replace('_', '-')
         else:
-            self.branch = branchName()
+            self.branch = branchName().replace('_', '-')
 
     def run(self):
         gitConfig = GitConfig()

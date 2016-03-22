@@ -6,9 +6,9 @@ from git_helper import *
 class RemoveCommand:
     def __init__(self, args):
         if (args.branch):
-            self.branch = args.branch
+            self.branch = args.branch.replace('_', '-')
         else:
-            self.branch = branchName()
+            self.branch = branchName().replace('_', '-')
 
     def run(self):
         gitConfig = GitConfig()
