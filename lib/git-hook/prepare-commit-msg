@@ -11,6 +11,6 @@ prefix = gitConfig.get(branchName().replace('_', '-'))
 with open(sys.argv[1], 'r') as message_file:
     lines = message_file.readlines()
     if (prefix != None):
-        lines[0] = '[' + prefix + '] ' + lines[0]
+        lines[0] = prefix + lines[0]
 with open(sys.argv[1], 'w') as message_file:
     message_file.write(''.join(lines))
