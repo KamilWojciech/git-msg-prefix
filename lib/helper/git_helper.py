@@ -1,6 +1,6 @@
 import subprocess
 import re
-
+import sys
 
 class GitConfig():
     def __init__(self):
@@ -46,9 +46,8 @@ class GitConfig():
 
 def branchName():
     try:
-        branchName = subprocess.check_output(['bash', '-c', 'git rev-parse --abbrev-ref HEAD '])
+        branchName = subprocess.check_output(['bash', '-c', 'git rev-parse --abbrev-ref HEAD 2>/dev/null '])
         branchName = branchName.strip()
     except:
         branchName = None
-
     return branchName

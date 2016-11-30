@@ -6,6 +6,8 @@ sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)) + '/../helper')
 from git_helper import *
 
 gitConfig = GitConfig()
+if branchName() == None:
+    sys.exit()
 prefix = gitConfig.get(branchName().replace('_', '-'))
 
 with open(sys.argv[1], 'r') as message_file:
