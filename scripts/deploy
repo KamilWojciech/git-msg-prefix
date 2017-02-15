@@ -1,0 +1,41 @@
+#!/bin/bash
+
+set -e # Exit with nonzero exit code if anything fails
+
+FORMULA_NAME="git-msg-prefixx"
+
+SOURCE_BRANCH="master"
+TARGET_BRANCH="test-autodeploy"
+
+# Pull requests and commits to other branches shouldn't try to deploy, just build to verify
+if [ -z "$TRAVIS_TAG" ]; then
+    echo "Skipping deploy. It's not a tag."
+    exit 0
+fi
+
+REPO="git@github.com:KamilWojciech/homebrew-tap.git"
+SSH_REPO=${REPO/https:\/\/github.com\//git@github.com:}
+
+mkdir -p build/
+
+sudo rm -rf build/out
+git clone $REPO build/out
+pushd build/out
+  git checkout $TARGET_BRANCH || git checkout --orphan $TARGET_BRANCH
+
+  rm -rf $FORMULA_NAME.rb
+  cp ../../scripts/formula.rb $FORMULA_NAME.rb
+  sed -i "s/{{TARBALL_NAME}}/${TRAVIS_TAG}.tar.gz/g" $FORMULA_NAME.rb
+
+  git config user.name "Travis CI"
+  if [ -z `git diff --exit-code` ]; then
+    echo "No changes to the output on this push; exiting."
+    exit 0
+  fi
+
+  git diff --exit-code
+popd
+
+
+
+# @TODO: shasum -a 256 some_tarball.tar.gz
