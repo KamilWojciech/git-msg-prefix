@@ -13,7 +13,8 @@ if [ -z "$TRAVIS_TAG" ]; then
     exit 0
 fi
 
-REPO="git@github.com:KamilWojciech/homebrew-tap.git"
+#REPO="git@github.com:KamilWojciech/homebrew-tap.git"
+REPO="travis:$GITHUB_API_KEY@github.com:KamilWojciech/homebrew-tap.git"
 SSH_REPO=${REPO/https:\/\/github.com\//git@github.com:}
 
 mkdir -p build/
@@ -34,6 +35,10 @@ pushd build/out
   fi
 
   git diff --exit-code
+
+  git add $FORMULA_NAME.rb
+  git commit -m "Update formula $FORMULA_NAME to ${TRAVIS_TAG}"
+  git push 
 popd
 
 
