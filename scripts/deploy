@@ -14,7 +14,7 @@ TARGET_BRANCH="test-autodeploy"
 # fi
 
 #REPO="git@github.com:KamilWojciech/homebrew-tap.git"
-REPO="travis:$GITHUB_API_KEY@github.com:KamilWojciech/homebrew-tap.git"
+REPO="https://travis:$GITHUB_API_KEY@github.com/KamilWojciech/homebrew-tap.git"
 SSH_REPO=${REPO/https:\/\/github.com\//git@github.com:}
 
 mkdir -p build/
