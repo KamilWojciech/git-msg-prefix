@@ -39,7 +39,7 @@ pushd build/out
   fi
 
   git commit -m "Update formula $FORMULA_NAME to ${TRAVIS_TAG}"
-  git push
+  git push --set-upstream origin $TARGET_BRANCH
 popd
 
 
