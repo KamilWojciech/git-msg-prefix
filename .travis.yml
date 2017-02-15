@@ -1,3 +1,4 @@
 language: generic
+sudo: require
 
 after_deploy: ./script/deploy
