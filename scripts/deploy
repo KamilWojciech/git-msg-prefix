@@ -8,10 +8,10 @@ SOURCE_BRANCH="master"
 TARGET_BRANCH="test-autodeploy"
 
 # Pull requests and commits to other branches shouldn't try to deploy, just build to verify
-if [ -z "$TRAVIS_TAG" ]; then
-    echo "Skipping deploy. It's not a tag."
-    exit 0
-fi
+# if [ -z "$TRAVIS_TAG" ]; then
+#     echo "Skipping deploy. It's not a tag."
+#     exit 0
+# fi
 
 #REPO="git@github.com:KamilWojciech/homebrew-tap.git"
 REPO="travis:$GITHUB_API_KEY@github.com:KamilWojciech/homebrew-tap.git"
@@ -38,7 +38,7 @@ pushd build/out
 
   git add $FORMULA_NAME.rb
   git commit -m "Update formula $FORMULA_NAME to ${TRAVIS_TAG}"
-  git push 
+  git push
 popd
 
 
