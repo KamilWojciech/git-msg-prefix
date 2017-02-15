@@ -32,6 +32,7 @@ pushd build/out
 
   git config user.name "Travis CI"
   git config user.email "travis"
+  git config push.default "simple"
   if [ -z `git diff --cached --name-only` ]; then
     echo "No changes to the output on this push; exiting."
     exit 0
