@@ -31,6 +31,7 @@ pushd build/out
   git add $FORMULA_NAME.rb
 
   git config user.name "Travis CI"
+  git config user.email "travis"
   if [ -z `git diff --cached --name-only` ]; then
     echo "No changes to the output on this push; exiting."
     exit 0
