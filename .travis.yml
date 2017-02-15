@@ -2,4 +2,4 @@ language: generic
 sudo: require
 
 after_success:
-  - ./script/deploy
+  - ./scripts/deploy
