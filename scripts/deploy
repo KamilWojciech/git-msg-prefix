@@ -3,23 +3,26 @@
 set -e # Exit with nonzero exit code if anything fails
 
 FORMULA_NAME="git-msg-prefix"
-
 SOURCE_BRANCH="master"
 TARGET_BRANCH="test-autodeploy"
 
 # Pull requests and commits to other branches shouldn't try to deploy, just build to verify
-# if [ -z "$TRAVIS_TAG" ]; then
-#     echo "Skipping deploy. It's not a tag."
-#     exit 0
-# fi
+if [ -z "$TRAVIS_TAG" ]; then
+    echo "Skipping deploy. It's not a tag."
+    exit 0
+fi
 
-#REPO="git@github.com:KamilWojciech/homebrew-tap.git"
 REPO="https://travis:$GITHUB_API_KEY@github.com/KamilWojciech/homebrew-tap.git"
+TARBALL_URL="https://github.com/KamilWojciech/git-msg-prefix/archive/$TRAVIS_TAG.tar.gz"
 SSH_REPO=${REPO/https:\/\/github.com\//git@github.com:}
 
 mkdir -p build/
-
 sudo rm -rf build/out
+
+curl -O TARBALL_URL build/tarball.tar.gz
+SHA256_SUM=`shasum -a 256 build/tarball.tar.gz`
+
+# Update homebrew tap repo
 git clone $REPO build/out
 pushd build/out
   git checkout $TARGET_BRANCH || git checkout -b $TARGET_BRANCH
@@ -27,6 +30,8 @@ pushd build/out
   rm -rf $FORMULA_NAME.rb
   cp ../../scripts/formula.rb $FORMULA_NAME.rb
   sed -i "s/{{TARBALL_NAME}}/${TRAVIS_TAG}.tar.gz/g" $FORMULA_NAME.rb
+  sed -i "s/{{VERSION}}/${TRAVIS_TAG}/g" $FORMULA_NAME.rb
+  sed -i "s/{{SHA256_SUM}}/${SHA256_SUM}/g" $FORMULA_NAME.rb
 
   git add $FORMULA_NAME.rb
 
