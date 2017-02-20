@@ -19,8 +19,8 @@ SSH_REPO=${REPO/https:\/\/github.com\//git@github.com:}
 mkdir -p build/
 sudo rm -rf build/out
 
-curl -O TARBALL_URL build/tarball.tar.gz
-SHA256_SUM=`shasum -a 256 build/tarball.tar.gz`
+git archive --format=tar.gz -o build/$FORMULA_NAME-$TRAVIS_TAG.tar.gz $TRAVIS_TAG
+SHA256_SUM=`shasum -a 256 build/$FORMULA_NAME-$TRAVIS_TAG.tar.gz`
 echo "sha256_sum: $SHA256_SUM"
 
 # Update homebrew tap repo
