@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+set -e
+
+FILENAME=$1
+# Define variables.
+GH_API="https://api.github.com"
+GH_REPO="$GH_API/repos/KamilWojciech/git-msg-prefix"
+GH_TAGS="$GH_REPO/releases/tags/$TRAVIS_TAG"
+GH_RELEASES="$GH_REPO/releases"
+AUTH="Authorization: token $GITHUB_API_KEY"
+
+# Validate token.
+status_code=`curl -o /dev/null -s  -w "%{http_code}" -H "$AUTH" $GH_REPO`
+if [[ $status_code != 200 ]]; then
+  echo "Error: Invalid repo, token or network issue!";  exit 1;
+fi
+
+curl -X POST --data '{"tag_name": "'$TRAVIS_TAG'", "name": "'$TRAVIS_TAG'"}' -H "$AUTH" -H "Content-Type: application/json" $GH_RELEASES
+
+# Read asset tags.
+response=$(curl -sH "$AUTH" $GH_TAGS)
+
+# Get ID of the asset based on given filename.
+eval $(echo "$response" | grep -m 1 "id.:" | grep -w id | tr : = | tr -cd '[[:alnum:]]=')
+[ "$id" ] || { echo "Error: Failed to get release id for tag: $TRAVIS_TAG"; echo "$response" | awk 'length($0)<100' >&2; exit 1; }
+
+# Upload asset
+echo "Uploading asset... $localAssetPath" >&2
+
+# Construct url
+GH_ASSET="https://uploads.github.com/repos/KamilWojciech/git-msg-prefix/releases/$id/assets?name=$(basename $FILENAME)"
+
+curl "$GITHUB_OAUTH_BASIC" --data-binary @"$FILENAME" -H "$AUTH" -H "Content-Type: application/octet-stream" $GH_ASSET
