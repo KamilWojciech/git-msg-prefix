@@ -1,0 +1,51 @@
+#!/bin/bash
+
+FORMULA_NAME="git-msg-prefix"
+SOURCE_BRANCH="master"
+TARGET_BRANCH="test-autodeploy"
+
+# Pull requests and commits to other branches shouldn't try to deploy, just build to verify
+if [ -z "$TRAVIS_TAG" ]; then
+    echo "Skipping deploy. It's not a tag."
+    exit 0
+fi
+
+REPO="https://travis:$GITHUB_API_KEY@github.com/KamilWojciech/homebrew-tap.git"
+TARBALL_URL="https://github.com/KamilWojciech/git-msg-prefix/archive/$TRAVIS_TAG.tar.gz"
+SSH_REPO=${REPO/https:\/\/github.com\//git@github.com:}
+
+mkdir -p build/
+sudo rm -rf build/out
+
+git archive --format=tar.gz -o build/$FORMULA_NAME-$TRAVIS_TAG.tar.gz $TRAVIS_TAG
+SHA256_SUM=`shasum -a 256 build/$FORMULA_NAME-$TRAVIS_TAG.tar.gz`
+echo "sha256_sum: $SHA256_SUM"
+
+# Update homebrew tap repo
+git clone $REPO build/out
+pushd build/out
+  git checkout $TARGET_BRANCH || git checkout -b $TARGET_BRANCH
+
+  rm -rf $FORMULA_NAME.rb
+  cp ../../scripts/formula.rb $FORMULA_NAME.rb
+  sed -i "s/{{TARBALL_NAME}}/${TRAVIS_TAG}.tar.gz/g" $FORMULA_NAME.rb
+  sed -i "s/{{VERSION}}/${TRAVIS_TAG}/g" $FORMULA_NAME.rb
+  sed -i "s/{{SHA256_SUM}}/${SHA256_SUM}/g" $FORMULA_NAME.rb
+
+  git add $FORMULA_NAME.rb
+
+  git config user.name "Travis CI"
+  git config user.email "travis"
+  git config push.default "simple"
+  if [ -z `git diff --cached --name-only` ]; then
+    echo "No changes to the output on this push; exiting."
+    exit 0
+  fi
+
+  git commit -m "Update formula $FORMULA_NAME to ${TRAVIS_TAG}"
+  git push --set-upstream origin $TARGET_BRANCH
+popd
+
+
+
+# @TODO: shasum -a 256 some_tarball.tar.gz

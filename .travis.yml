@@ -1,0 +1,5 @@
+language: generic
+sudo: require
+
+after_success:
+  - ./scripts/deploy
