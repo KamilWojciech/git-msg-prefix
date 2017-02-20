@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e # Exit with nonzero exit code if anything fails
-
 FORMULA_NAME="git-msg-prefix"
 SOURCE_BRANCH="master"
 TARGET_BRANCH="test-autodeploy"
