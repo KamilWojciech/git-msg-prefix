@@ -35,8 +35,8 @@ pushd build/out
 
   rm -rf $FORMULA_NAME.rb
   cp ../../scripts/formula.rb $FORMULA_NAME.rb
-  sed -i "s@{{TARBALL}}@${TRAVIS_TAG}/${TRAVIS_TAG}.tar.gz@g" $FORMULA_NAME.rb
-  sed -i "s/{{VERSION}}/${TRAVIS_TAG}/g" $FORMULA_NAME.rb
+  sed -i "s@{{TARBALL}}@$TRAVIS_TAG/$FORMULA_NAME-$TRAVIS_TAG.tar.gz@g" $FORMULA_NAME.rb
+  sed -i "s/{{VERSION}}/$TRAVIS_TAG/g" $FORMULA_NAME.rb
   sed -i "s/{{SHA256_SUM}}/${SHA256_SUM}/g" $FORMULA_NAME.rb
 
   git add $FORMULA_NAME.rb
