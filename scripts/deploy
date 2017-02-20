@@ -1,8 +1,10 @@
 #!/bin/bash
 
+set -e # Exit with nonzero exit code if anything fails
+
 FORMULA_NAME="git-msg-prefix"
 SOURCE_BRANCH="master"
-TARGET_BRANCH="test-autodeploy"
+TARGET_BRANCH="master"
 
 # Pull requests and commits to other branches shouldn't try to deploy, just build to verify
 if [ -z "$TRAVIS_TAG" ]; then
@@ -18,7 +20,12 @@ mkdir -p build/
 sudo rm -rf build/out
 
 git archive --format=tar.gz -o build/$FORMULA_NAME-$TRAVIS_TAG.tar.gz $TRAVIS_TAG
-SHA256_SUM=`shasum -a 256 build/$FORMULA_NAME-$TRAVIS_TAG.tar.gz`
+SHA256_SUM=`shasum -a 256 build/$FORMULA_NAME-$TRAVIS_TAG.tar.gz | cut -d " " -f1`
+
+pushd scripts
+  ./upload-gh-assets ../build/$FORMULA_NAME-$TRAVIS_TAG.tar.gz
+popd
+
 echo "sha256_sum: $SHA256_SUM"
 
 # Update homebrew tap repo
@@ -28,7 +35,7 @@ pushd build/out
 
   rm -rf $FORMULA_NAME.rb
   cp ../../scripts/formula.rb $FORMULA_NAME.rb
-  sed -i "s/{{TARBALL_NAME}}/${TRAVIS_TAG}.tar.gz/g" $FORMULA_NAME.rb
+  sed -i "s@{{TARBALL}}@${TRAVIS_TAG}/${TRAVIS_TAG}.tar.gz@g" $FORMULA_NAME.rb
   sed -i "s/{{VERSION}}/${TRAVIS_TAG}/g" $FORMULA_NAME.rb
   sed -i "s/{{SHA256_SUM}}/${SHA256_SUM}/g" $FORMULA_NAME.rb
 
@@ -45,7 +52,3 @@ pushd build/out
   git commit -m "Update formula $FORMULA_NAME to ${TRAVIS_TAG}"
   git push --set-upstream origin $TARGET_BRANCH
 popd
-
-
-
-# @TODO: shasum -a 256 some_tarball.tar.gz
