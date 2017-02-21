@@ -14,7 +14,13 @@ brew install git-msg-prefix
 ```
 
 # Usage
+## Branch name
+You can use one of 2 naming conventions to set commit message prefix. If you use jira for issue tracking you can name your branch like `ab-12-branch-name`, the prefix will be `AB-12`.
+For github use `g12-branch-name`, the prefix will be `#12`. You can also replace `-` with `_`. 
+
 ## Set prefix
+You can always specify custom prefix for brunch.
+
 ```bash
 git msg-prefix set prefix [branch]
 ```
