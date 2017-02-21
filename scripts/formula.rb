@@ -30,7 +30,7 @@ class GitMsgPrefix < Formula
       end
     end
 
-    File.delete gitHookFile
+    File.delete gitHookFile unless !File.exists?(gitHookFile)
     FileUtils.ln_s lib + 'git-hook/prepare-commit-msg', gitHookFile
   end
 end
