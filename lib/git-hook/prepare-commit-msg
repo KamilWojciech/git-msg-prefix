@@ -2,6 +2,7 @@
 
 import sys
 import os
+import re
 sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)) + '/../helper')
 from git_helper import *
 
@@ -9,6 +10,15 @@ gitConfig = GitConfig()
 if branchName() == None:
     sys.exit()
 prefix = gitConfig.get(branchName().replace('_', '-'))
+if prefix == None:
+    prog = re.compile("^((?P<jira>[a-zA-Z0-9]+[-_]{1}[0-9]+)|(?P<github>g[0-9]+))[-_].+$")
+    result = prog.match(branchName())
+    if result == None:
+        sys.exit()
+    if result.group('jira') != None:
+        prefix = result.group('jira').replace('_', '-').upper()
+    if result.group('github') != None:
+        prefix = result.group('github').replace('g', '#')
 
 with open(sys.argv[1], 'r') as message_file:
     lines = message_file.readlines()
