@@ -14,26 +14,30 @@ class GitMsgPrefix < Formula
     gitHookFile = gitHookDir + 'prepare-commit-msg'
     FileUtils.mkdir_p(gitHookDir) unless File.exists?(gitHookDir)
 
+    libLinkFile = "/usr/local/lib/prepare-commit-msg"
+
     linked = false
     if File.symlink?(gitHookFile)
       symlinkTarget = File.readlink(gitHookFile)
-      if File.fnmatch File.expand_path(prefix + '../') + '**prepare-commit-msg', symlinkTarget
+      if File.fnmatch libLinkFile, symlinkTarget
         linked = true
       end
     end
+
+    lib.install_symlink lib + 'git-hook/prepare-commit-msg'
 
     if File.exist?(gitHookFile) && !linked
       print "File '" + gitHookFile + "' already exists! Do you want to replace it? [Y/n]: "
       input = STDIN.gets.strip
       if input.downcase != 'y'
         return false
+      else
+        File.delete gitHookFile
       end
     end
 
-    libLinkFile = "/usr/local/lib/prepare-commit-msg"
-    File.delete gitHookFile unless !File.exists?(gitHookFile)
-    lib.install_symlink lib + 'git-hook/prepare-commit-msg'
-    File.delete libLinkFile unless !File.exists?(libLinkFile)
-    FileUtils.ln_s libLinkFile, gitHookFile
+    if !linked
+      FileUtils.ln_s libLinkFile, gitHookFile
+    end
   end
 end
