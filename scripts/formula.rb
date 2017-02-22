@@ -30,8 +30,10 @@ class GitMsgPrefix < Formula
       end
     end
 
+    libLinkFile = "/usr/local/lib/prepare-commit-msg"
     File.delete gitHookFile unless !File.exists?(gitHookFile)
     lib.install_symlink lib + 'git-hook/prepare-commit-msg'
-    FileUtils.ln_s '/usr/local/lib/prepare-commit-msg', gitHookFile
+    File.delete libLinkFile unless !File.exists?(libLinkFile)
+    FileUtils.ln_s libLinkFile, gitHookFile
   end
 end
