@@ -13,6 +13,11 @@ brew tap kamilwojciech/tap
 brew install git-msg-prefix
 ```
 
+Now configure your git with templates directory
+```bash 
+ git config --global init.templatedir ~/.git-templates
+ ```
+
 # Usage
 ## Branch name
 You can use one of 2 naming conventions to set commit message prefix. If you use jira for issue tracking you can name your branch like `ab-12-branch-name`, the prefix will be `AB-12`.
