@@ -7,7 +7,7 @@ You can set it up via [Homebrew](http://brew.sh/)
 Run the following commands:
 
 ```bash
-brew tap kamilwojciech/tap
+brew tap kamilczerw/tap
 ```
 ```bash
 brew install git-msg-prefix

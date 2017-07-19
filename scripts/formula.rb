@@ -1,7 +1,7 @@
 class GitMsgPrefix < Formula
   desc ""
-  homepage "https://github.com/KamilWojciech/git-msg-prefix"
-  url "https://github.com/KamilWojciech/git-msg-prefix/releases/download/{{TARBALL}}"
+  homepage "https://github.com/kamilczerw/git-msg-prefix"
+  url "https://github.com/kamilczerw/git-msg-prefix/releases/download/{{TARBALL}}"
   version "{{VERSION}}"
   sha256 "{{SHA256_SUM}}"
 

@@ -12,8 +12,8 @@ if [ -z "$TRAVIS_TAG" ]; then
     exit 0
 fi
 
-REPO="https://travis:$GITHUB_API_KEY@github.com/KamilWojciech/homebrew-tap.git"
-TARBALL_URL="https://github.com/KamilWojciech/git-msg-prefix/archive/$TRAVIS_TAG.tar.gz"
+REPO="https://travis:$GITHUB_API_KEY@github.com/kamilczerw/homebrew-tap.git"
+TARBALL_URL="https://github.com/kamilczerw/git-msg-prefix/archive/$TRAVIS_TAG.tar.gz"
 SSH_REPO=${REPO/https:\/\/github.com\//git@github.com:}
 
 mkdir -p build/

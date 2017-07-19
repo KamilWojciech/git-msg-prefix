@@ -4,7 +4,7 @@ set -e
 FILENAME=$1
 # Define variables.
 GH_API="https://api.github.com"
-GH_REPO="$GH_API/repos/KamilWojciech/git-msg-prefix"
+GH_REPO="$GH_API/repos/kamilczerw/git-msg-prefix"
 GH_TAGS="$GH_REPO/releases/tags/$TRAVIS_TAG"
 GH_RELEASES="$GH_REPO/releases"
 AUTH="Authorization: token $GITHUB_API_KEY"
@@ -28,6 +28,6 @@ eval $(echo "$response" | grep -m 1 "id.:" | grep -w id | tr : = | tr -cd '[[:al
 echo "Uploading asset... $localAssetPath" >&2
 
 # Construct url
-GH_ASSET="https://uploads.github.com/repos/KamilWojciech/git-msg-prefix/releases/$id/assets?name=$(basename $FILENAME)"
+GH_ASSET="https://uploads.github.com/repos/kamilczerw/git-msg-prefix/releases/$id/assets?name=$(basename $FILENAME)"
 
 curl "$GITHUB_OAUTH_BASIC" --data-binary @"$FILENAME" -H "$AUTH" -H "Content-Type: application/octet-stream" $GH_ASSET
